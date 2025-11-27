@@ -1,0 +1,32 @@
+title: AWS API Gateway Cache Not Enabled or Not Encrypted
+id: 7b39b90b-3eb3-4046-bd2c-96ece214f883
+status: experimental
+description: Detects AWS API Gateway methods where caching is disabled or cache encryption is not enabled.
+author: Owaiz Khan
+date: 2025-11-27
+references:
+  - https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html
+logsource:
+  product: aws
+  service: apigateway
+  category: configuration
+detection:
+  selection_cache_disabled:
+    settings.cache_enabled: false
+  selection_unencrypted_cache:
+    settings.cache_data_encrypted: false
+  condition: selection_cache_disabled or selection_unencrypted_cache
+fields:
+  - restApiId
+  - stage
+  - method
+  - settings.cache_enabled
+  - settings.cache_data_encrypted
+tags:
+  - attack.defense-evasion
+  - attack.persistence
+  - cloud.aws
+  - apigateway
+  - misconfiguration
+  - compliance.cis
+  - compliance.audit
