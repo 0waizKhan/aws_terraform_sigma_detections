@@ -1,0 +1,34 @@
+title: AWS API Gateway Execution Logging Not Enabled
+id: 5b57daf9-9f8b-4db4-b688-6b51721834f4
+status: experimental
+description: Detects API Gateway stages (REST or V2) without execution logging enabled.
+author: Owaiz Khan
+date: 2025-11-27
+references:
+  - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+logsource:
+  product: aws
+  service: apigateway
+  category: configuration
+detection:
+  # REST API Stage missing destination ARN (logging disabled)
+  rest_stage_logging_disabled:
+    access_log_settings.destination_arn: null
+  # API Gateway V2 Stage missing destination ARN (logging disabled)
+  v2_stage_logging_disabled:
+    access_log_settings.destination_arn: null
+condition: rest_stage_logging_disabled or v2_stage_logging_disabled
+fields:
+  - restApiId
+  - apiId
+  - stage
+  - access_log_settings.destination_arn
+tags:
+  - security-control
+  - cloud.aws
+  - apigateway
+  - misconfiguration
+  - compliance.cis
+  - compliance.audit
+  - logging
+  - observability
